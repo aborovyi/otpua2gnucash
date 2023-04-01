@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "otpua2gnucash"
+version = "0.1.0"
+description = "OTPua to GNUcash statement importer"
+authors = ["Andrii Borovyi <andrii.borovyi@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^7.2.2"
+pyexcel = "^0.7.0"
+
+[tool.poetry.dev-dependencies]
+ruff = "^0.0.260"
+black = "^23.3.0"
+pre-commit = "^3.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tools.pytest]
+testpaths = "tests"
+
+[tool.pre_commit]
+version = "^3.2.1"
+hooks = [
+    "black",
+    "isort",
+    "flake8",
+    "mypy"
+]
