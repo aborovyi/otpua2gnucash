@@ -5,7 +5,7 @@ import pytest
 import datetime
 from collections import OrderedDict
 
-from otpua2gnucash.core import ConfigMapper
+from otpua2gnucash.core import ConfigMapper, StatementRecord
 
 
 def test_class_initialization_valid():
@@ -95,7 +95,36 @@ def test_format_field(incoming_field, exp):
     assert res == exp
 
 
-def test_parse_completed_data():
+def test_parse_correct_instance():
+    """
+    Verify a single Statement Record will be parsed correctly
+    """
+    data = OrderedDict(
+        [
+            ('Account/card number', '234567****1111'), 
+            ('', ''), 
+            ('Transaction type', 'операція за карткою'), 
+            ('Transaction date', datetime.datetime(2023, 5, 26, 15, 21, 7)), 
+            (
+                'Date of transaction processing in the bank',
+                datetime.date(2023, 5, 28)
+            ),
+            (
+                'Transaction description', 
+                'Покупка (Оплата цифровим токеном) NIKORA 272(SH001527)'),
+            ('Transaction amount', -18.51),
+            ('Transaction currency', 'GEL'),
+            ('Transaction amount in account currency', -271.44),
+            ('Account currency', 'UAH'),
+            ('Code of enterprise type', '5411')
+        ]
+    )
+    mapper = ConfigMapper(name="otpsmart")
+    statement = mapper.parse(data)
+    assert isinstance(statement, StatementRecord)
+
+
+def test_parse_correct_data():
     """
     Verify a single Statement Record will be parsed correctly
     """
@@ -121,5 +150,14 @@ def test_parse_completed_data():
         ]
     )
     mapper = ConfigMapper(name="otpsmart")
-    # TODO Stopped here
-    # ADDME case to checking if complete record is written correctly.
+    statement = mapper.parse(data)
+    expected_data = StatementRecord(
+        source_account="234567*****1111",
+        date=datetime.datetime(2023, 3, 30),
+        number=datetime.datetime(2023, 3, 30, 14, 14, 12),
+        description='Покупка (Оплата цифровим токеном) NIKORA 479(SH019281)',
+        destination="<internal>",
+        src_value=-184.95,
+        dst_value=-12.49,
+    )
+    assert statement == expected_data

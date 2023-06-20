@@ -35,6 +35,7 @@ otpsmart = {
         "number": "{B3}",
         "description": "{B5}",
         "destination": "<internal>",
-        "value": ["{B8}", "{B6}"],  # Set with first not None value
+        "src_value": "{B8}",
+        "dst_value": "{B6}",
     }
 }

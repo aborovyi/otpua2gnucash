@@ -5,7 +5,7 @@ creates a map between statement data and GnuCash internals
 
 from collections import OrderedDict
 from typing import Optional
-from otpua2gnucash.core import profiles
+from otpua2gnucash.core import profiles, StatementRecord
 
 
 class ConfigMapper():
@@ -89,4 +89,6 @@ class ConfigMapper():
         final_data = {}
         for key, val in self.map.items():
             final_data[key] = self.format_field(val, int_vars)
-        # TODO Stopped here
+
+        res = StatementRecord(**final_data)
+        return res
