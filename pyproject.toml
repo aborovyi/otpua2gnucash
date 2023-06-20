@@ -27,7 +27,7 @@ line-length = 88
 profile = "black"
 
 [tools.pytest]
-testpaths = "tests"
+testpaths = "tests/"
 
 [tool.pre_commit]
 version = "^3.2.1"
